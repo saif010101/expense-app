@@ -7,47 +7,55 @@ function App() {
 
   return (
     <>
-      <main className="m-5 flex flex-col gap-3">
-        <h1 className="text-2xl font-bold">Fasih's Dashboard</h1>
-        <div className="p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg">
+      <main className="m-5 p-[clamp(0rem,4vw,15rem)]">
+        <div className="flex justify-between items-center mb-5">
+          <h1 className="text-[clamp(1.375rem,4vw,2.25rem)] font-bold">Fasih's Dashboard</h1>
+          <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
+            + Add Meal
+          </button>
+        </div>
+        <div className="p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg mb-5">
           <span className="font-[600]">
             Net Balance: <span className="ml-2">-150 PKR</span>
           </span>
         </div>
-        {/* To Pay Card */}
-        <div className="flex flex-col gap-2 p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg">
-          <span className="font-bold text-xl">To Pay</span>
-          <div className="flex justify-between items-center">
-            <span className="font-[500]">Ali - </span>
-            <span className="mr-auto ml-2">Rs. 200</span>
-            <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
-              Clear
-            </button>
+
+        <div className="grid sm:grid-cols-2 gap-2">
+          {/* To Pay Card */}
+          <div className="flex flex-col gap-2 p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg">
+            <span className="font-bold text-xl">To Pay</span>
+            <div className="flex justify-between items-center">
+              <span className="font-[500]">Ali - </span>
+              <span className="mr-auto ml-2">Rs. 200</span>
+              <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
+                Clear
+              </button>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-[500]">Hamza - </span>
+              <span className="mr-auto ml-2">Rs. 100</span>
+              <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
+                Clear
+              </button>
+            </div>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="font-[500]">Hamza - </span>
-            <span className="mr-auto ml-2">Rs. 100</span>
-            <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
-              Clear
-            </button>
-          </div>
-        </div>
-        {/* To Recieve Card */}
-        <div className="flex flex-col gap-2 p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg">
-          <span className="font-bold text-xl">To Receive</span>
-          <div className="flex justify-between items-center">
-            <span className="font-[500]">Ali - </span>
-            <span className="mr-auto ml-2">Rs. 200</span>
-            <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
-              Clear
-            </button>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="font-[500]">Hamza - </span>
-            <span className="mr-auto ml-2">Rs. 100</span>
-            <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
-              Clear
-            </button>
+          {/* To Recieve Card */}
+          <div className="flex flex-col gap-2 p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg">
+            <span className="font-bold text-xl">To Receive</span>
+            <div className="flex justify-between items-center">
+              <span className="font-[500]">Ali - </span>
+              <span className="mr-auto ml-2">Rs. 200</span>
+              <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
+                Clear
+              </button>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-[500]">Hamza - </span>
+              <span className="mr-auto ml-2">Rs. 100</span>
+              <button className="text-white text-sm bg-blue-500 hover:bg-blue-400 cursor-pointer px-2 py-1 rounded-lg">
+                Clear
+              </button>
+            </div>
           </div>
         </div>
       </main>
