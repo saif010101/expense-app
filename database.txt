@@ -1,0 +1,13 @@
+students(student_id,fname,lname)
+meals(meal_id,description,total,date)
+students_meals(student_id,meal_id,role)
+	-> student_id references students(student_id)
+	-> meal_id references meals(meal_id)
+to_pay(payer_id,receiver_id,amount,meal_id)
+	-> payer_id references students(student_id)
+	-> receiver_id references students(student_id)
+	
+	
+	
+who pays and who recieves with amount mysql query
+SELECT s.fname as receiver_name,sub.payer_name,sub.amount FROM (SELECT fname as payer_name,receiver_id,amount FROM to_pay tp INNER JOIN students st ON tp.payer_id = st.student_id WHERE payer_id = 1) sub INNER JOIN students s ON sub.receiver_id = s.student_id LIMIT 100
