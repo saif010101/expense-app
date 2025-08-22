@@ -47,8 +47,8 @@ export default function Dashboard({handleAddMealClick}) {
       <Header firstName={firstName} handleAddMealClick={handleAddMealClick}/>
       <NetBalanceCard netBalance={netBalance}/>
       <div className="grid sm:grid-cols-2 gap-2">
-        <Card data={toPayRecords}/>
-        <Card data={toReceiveRecords}/>
+        <Card heading={"To Pay"} data={toPayRecords}/>
+        <Card heading={"To Receive"} data={toReceiveRecords}/>
       </div>
     </main>
   );

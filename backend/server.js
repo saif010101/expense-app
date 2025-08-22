@@ -65,3 +65,11 @@ app.get("/:username/fname", async (req,res) => {
    
 })
 
+
+app.post("/addmeal", async (req,res) => {
+  const formData = req.body;
+  // console.log(formData.total_cost);
+  const response = await db.query(`INSERT INTO meals (description,total,date) VALUES ('${formData.description}',${formData.total_cost},CURDATE());`);
+  console.log(response);
+})
+
