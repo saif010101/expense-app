@@ -68,8 +68,23 @@ app.get("/:username/fname", async (req,res) => {
 
 app.post("/addmeal", async (req,res) => {
   const formData = req.body;
-  // console.log(formData.total_cost);
+  const participatedStudents = formData.participated;
+
+  // we will insert user given data into meals table and then fetch latest meal_id
+  // using MAX() because we will want to add all students that participated in this meal
+  // so we will add 
   const response = await db.query(`INSERT INTO meals (description,total,date) VALUES ('${formData.description}',${formData.total_cost},CURDATE());`);
-  console.log(response);
+  const new_meal_id = await db.query(`SELECT MAX(meal_id) as meal_id FROM meals;`);
+  const {meal_id} = new_meal_id[0][0];
+  
+  // Add payer first
+  const test = await db.query(`INSERT INTO students_meals VALUES ('${formData.paid_by}',${meal_id},'payer')`);
+  // add participants
+  for (const username in participatedStudents) {
+    // console.log(`${username} : ${participatedStudents[username]}`);
+    if (participatedStudents[username]){
+      await db.query(`INSERT INTO students_meals VALUES ('${username}',${meal_id},'participant')`);
+    }
+  }
 })
 

@@ -18,9 +18,11 @@ export default function Modal({ handleMealSubmit, handleChange, isModalOpen }) {
                   onChange={handleChange}
                   //
                 >
-                  <option value="Ali">Ali</option>
-                  <option value="Hamza">Hamza</option>
-                  <option value="Noor">Noor</option>
+                  <option value="p230512">Saif</option>
+                  <option value="p230627">Fasih</option>
+                  <option value="p230614">Mahad</option>
+                  <option value="p23617">Atif</option>
+                  <option value="p230672">Yaqub</option>
                 </select>
               </div>
               <div className="grid gap-1">
