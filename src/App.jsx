@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
-import Dashboard from "./components/Dashboard.jsx";
-import Modal from "./components/Modal.jsx";
+import { useState} from "react";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import "./index.css";
+import Navbar from "./components/Navbar.jsx";
+import Modal from "./components/Modal.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Meals from "./pages/Meals.jsx";
 
 function App() {
   // TODO : fetch students name from database instead of hardcoding it
@@ -17,13 +20,12 @@ function App() {
       p230672: false,
       p230613: false,
     },
-    description : 'null'
+    description: "null",
   });
-
 
   const isStudentCheckBox = (targetElement) => {
     return targetElement.type === "checkbox";
-  }
+  };
 
   const handleChange = (e) => {
     // target element name
@@ -46,14 +48,25 @@ function App() {
   };
 
   const handleMealSubmit = () => {
-    axios.post("http://localhost:3000/addmeal",formData);
+    axios.post("http://localhost:3000/addmeal", formData);
     toggleModal();
-  }
+  };
 
   return (
     <>
-      <Dashboard handleAddMealClick={toggleModal} />
-      <Modal handleMealSubmit={handleMealSubmit} handleChange={handleChange} isModalOpen={isModalOpen} />
+      <Navbar />
+      <Routes>
+        <Route path="/meals" element={<Meals />}></Route>
+        <Route
+          path="/"
+          element={<Dashboard handleAddMealClick={toggleModal} />}
+        ></Route>
+      </Routes>
+      <Modal
+        handleMealSubmit={handleMealSubmit}
+        handleChange={handleChange}
+        isModalOpen={isModalOpen}
+      />
     </>
   );
 }

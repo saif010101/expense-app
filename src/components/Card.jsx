@@ -2,7 +2,7 @@ import React from "react";
 
 const Card = ({heading,data}) => {
   return (
-    <div className="flex flex-col gap-2 p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg">
+    <div className="flex flex-col gap-2 p-4 bg-white border-1 border-gray-300 shadow-md rounded-lg ">
       <span className="font-bold text-xl">{heading}</span>
       {data.map((record) => (
         <div className="flex justify-between items-center">

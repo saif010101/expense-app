@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
 body {
-  background-color: rgb(230, 230, 230);
+  background : url(./assets/always-grey.png);
+  min-height : 100vh;
+  background-blend-mode:overlay;
 }

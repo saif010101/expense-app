@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
-import Header from "./Header";
-import NetBalanceCard from "./NetBalanceCard";
-import Card from "./Card";
+import Header from "../components/Header.jsx";
+import NetBalanceCard from "../components/NetBalanceCard.jsx";
+import Card from "../components/Card.jsx";
 import axios from "axios";
 
 export default function Dashboard({handleAddMealClick}) {
