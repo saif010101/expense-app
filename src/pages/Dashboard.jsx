@@ -43,7 +43,7 @@ export default function Dashboard({handleAddMealClick}) {
 
 
   return (
-    <main className="m-5 p-[clamp(0rem,4vw,15rem)]">
+    <main className="m-5 p-[clamp(0rem,4vw,17rem)]">
       <Header firstName={firstName} handleAddMealClick={handleAddMealClick}/>
       <NetBalanceCard netBalance={netBalance}/>
       <div className="grid sm:grid-cols-2 gap-2">

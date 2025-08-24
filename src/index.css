@@ -5,3 +5,58 @@ body {
   min-height : 100vh;
   background-blend-mode:overlay;
 }
+
+[data-modalwrapper="active"] {
+  animation: modalContainerReveal 2s ease-in;
+  animation-fill-mode: forwards;
+  animation-direction:normal;
+  pointer-events: auto;
+}
+
+[data-modalwrapper="inactive"] {
+  animation: modalContainerReveal 0.5s ease-out;
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
+[data-modal="active"] {
+  animation: modalReveal 0.7s;
+  animation-timing-function: cubic-bezier(0,.24,.37,1.01);
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+}
+/* [data-modal="inactive"] {
+  animation: modalReveal 0.7s;
+  animation-timing-function: cubic-bezier(0,.24,.37,1.01);
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+  animation-direction: reverse;
+} */
+/* [data-modal="active"] {
+  
+} */
+
+@keyframes modalReveal {
+  
+  0% {
+    top : 100%;
+  }
+
+  100% {
+    top : 50%;
+    translate: 0 -50%;
+  }
+}
+
+@keyframes modalContainerReveal {
+  
+  0% {
+    opacity: 0;
+    
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
