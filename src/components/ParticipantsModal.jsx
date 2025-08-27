@@ -1,25 +1,23 @@
-import { useState } from "react";
-
-export default function Modal({
-  handleMealSubmit,
-  handleChange,
-  isModalOpen = false,
-}) {
+export default function ParticipantsModal({isModalOpen = false,toggleModal,modalData}) {
+  // console.log(modalData.participants)
   return (
     <>
-      <div
-        onClick={(e) => {
-          e.target.dataset.modalwrapper = "inactive";
-        }}
-        data-modalWrapper={isModalOpen ? "active" : "inactive"}
-        className="fixed top-0 w-full h-screen opacity-0 bg-black/40 pointer-events-none transition-all duration-500 ease-in"
-      >
-        <div
-          className={`absolute  top-1/2 left-1/2 transform-[translate(-50%,-50%)] w-8/10 max-w-[700px] p-4 md:p-6 bg-white flex flex-col gap-2 ${
-            !isModalOpen && "translate-y-[520px]"
-          }  rounded-lg border-1 border-gray-400 transition-all duration-600 ease-out`}
-        >
-         
+      <div data-participants-modal-wrapper={isModalOpen ? "active" : "inactive"} className="absolute top-0 left-0 flex justify-center w-full h-screen bg-black/80 pointer-events-none opacity-0 transition duration-300 ease-in">
+        <div className="self-start min-w-[250px] min-h-[100px] mt-30 p-4 rounded-lg bg-white">
+          <h1 className="text-center text-xl font-bold">{modalData.description}</h1>
+          <p className="text-center text-sm font-bold mb-4">
+            (Monday, June 2025)
+          </p>
+          <p className="text-lg font-bold">Participants</p>
+          <ul>
+              {modalData.participants && modalData.participants.map(participant => (
+                <li>{participant.fname}</li>
+              ))}
+          </ul>
+          <p className="text-center text-lg font-bold my-1">Total : PKR {modalData.total}</p>
+          <button onClick={toggleModal} className="w-full mt-4 font-[500] text-sm bg-green-400 hover:bg-green-300 px-3 py-2 cursor-pointer rounded-lg">
+            Close
+          </button>
         </div>
       </div>
     </>

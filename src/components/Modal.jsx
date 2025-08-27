@@ -8,13 +8,10 @@ export default function Modal({
   return (
     <>
       <div
-        onClick={(e) => {
-          e.target.dataset.modalwrapper = "inactive";
-        }}
         data-modalwrapper={isModalOpen ? "active" : "inactive"}
         className="fixed top-0 w-full h-screen opacity-0 bg-black/40 pointer-events-none"
       >
-        {/* <div data-modal={isModalOpen ? 'active' : 'inactive'} className="absolute top-full left-1/2  transform-[translateX(-50%)] w-8/10 max-w-[700px] p-4 md:p-6 bg-white flex flex-col gap-2 rounded-lg border-1 border-gray-400">
+        <div className="absolute top-1/2 left-1/2  transform-[translate(-50%,-50%)] w-8/10 max-w-[700px] p-5 md:p-6 bg-white flex flex-col gap-2 rounded-lg border-1 border-gray-400">
           <div className="grid gap-1 md:grid-cols-2 md:gap-5">
             <div className="grid gap-1">
               <label className="font-[600]" htmlFor="paidBy">
@@ -35,7 +32,6 @@ export default function Modal({
               </select>
             </div>
             <div className="grid gap-1">
-              
               <label className="font-[600]" htmlFor="totalCost">
                 Total cost
               </label>
@@ -135,7 +131,7 @@ export default function Modal({
           >
             Add Meal
           </button>
-        </div> */}
+        </div>
       </div>
     </>
   );

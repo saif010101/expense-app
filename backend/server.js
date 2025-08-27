@@ -32,6 +32,8 @@ app.get("/:username/pay", async (req, res) => {
 });
 
 
+
+
 app.get("/:username/receive", async (req, res) => {
 
   const userName = req.params.username;
@@ -75,16 +77,35 @@ app.post("/addmeal", async (req,res) => {
   // so we will add 
   const response = await db.query(`INSERT INTO meals (description,total,date) VALUES ('${formData.description}',${formData.total_cost},CURDATE());`);
   const new_meal_id = await db.query(`SELECT MAX(meal_id) as meal_id FROM meals;`);
-  const {meal_id} = new_meal_id[0][0];
-  
+  const { meal_id } = new_meal_id[0][0];
+  console.log(formData);
   // Add payer first
   const test = await db.query(`INSERT INTO students_meals VALUES ('${formData.paid_by}',${meal_id},'payer')`);
   // add participants
   for (const username in participatedStudents) {
-    // console.log(`${username} : ${participatedStudents[username]}`);
     if (participatedStudents[username]){
       await db.query(`INSERT INTO students_meals VALUES ('${username}',${meal_id},'participant')`);
     }
   }
 })
+
+app.delete("/users/:fname",async (req,res) => {
+  // retrieve first name from the request
+  const fname = req.params.fname;
+
+  
+}) 
+
+app.get("/meals", async (req,res) => {
+  const response = await db.query("SELECT * FROM meals;");
+  res.json(response[0]);
+})
+
+app.get("/:meal_id/participants", async (req,res) => {
+  // Get meal id from url
+  const meal_id = Number(req.params.meal_id);
+  const response = await db.query(`SELECT fname,role FROM students_meals NATURAL JOIN students WHERE meal_id = ${meal_id}`);
+  res.json(response[0]);
+})
+
 
