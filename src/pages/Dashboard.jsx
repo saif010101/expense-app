@@ -13,8 +13,8 @@ export default function Dashboard({handleAddMealClick}) {
 
   useEffect(() => {
 
-    const userName = 'p230672';
-    const databaseHost = '192.168.1.10:3000';
+    const userName = 'p230627';
+    const databaseHost = '192.168.1.3:3000';
 
     const getToPayData = async () => {
       const records = await axios.get(`http://${databaseHost}/${userName}/pay`);

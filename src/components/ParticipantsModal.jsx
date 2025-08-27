@@ -1,5 +1,4 @@
 export default function ParticipantsModal({isModalOpen = false,toggleModal,modalData}) {
-  // console.log(modalData.participants)
   return (
     <>
       <div data-participants-modal-wrapper={isModalOpen ? "active" : "inactive"} className="absolute top-0 left-0 flex justify-center w-full h-screen bg-black/80 pointer-events-none opacity-0 transition duration-300 ease-in">

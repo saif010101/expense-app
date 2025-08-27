@@ -108,4 +108,10 @@ app.get("/:meal_id/participants", async (req,res) => {
   res.json(response[0]);
 })
 
+app.get("/students",async (req,res) => {
+  const response = await db.query("SELECT * from students");
+  res.json(response[0]);
+
+})
+
 
