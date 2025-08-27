@@ -3,14 +3,43 @@ import axios from "axios";
 import ParticipantsModal from "../components/ParticipantsModal.jsx";
 
 const Meals = () => {
+  // List of days
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  // List of months
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mealsData, setMealsData] = useState([]);
   const [modalData, setmodalData] = useState({});
 
+  const databaseHost = "192.168.1.10:3000";
+
   // fetch meals data from database
   useEffect(() => {
     const getMealsData = async () => {
-      const records = await axios.get("http://localhost:3000/meals");
+      const records = await axios.get(`http://${databaseHost}/meals`);
       setMealsData(records.data);
     };
 
@@ -21,11 +50,24 @@ const Meals = () => {
     setIsModalOpen((prev) => !prev);
   };
 
-  const getModalData = async meal_id => {
+  const getModalData = async (meal_id) => {
+    // TODO : get day and month from date
+
     // Get Meal Description and Amount
-    const mealData = mealsData.find(meal => meal.meal_id === meal_id);
-    const participantsData = await axios.get(`http://localhost:3000/${meal_id}/participants`);
+    const mealData = mealsData.find((meal) => meal.meal_id === meal_id);
+    const date = mealData.date.slice(0, 10);
+    const dateObj = new Date(date);
+
+    const participantsData = await axios.get(
+      `http://${databaseHost}/${meal_id}/participants`
+    );
+
     mealData.participants = participantsData.data;
+    mealData.dateInEnglish = {
+      day: weekdays[dateObj.getDay()],
+      month: months[dateObj.getMonth()],
+      year: dateObj.getFullYear(),
+    };
     console.log(mealData);
     setmodalData(mealData);
     toggleModal();
@@ -62,7 +104,13 @@ const Meals = () => {
           ))}
         </tbody>
       </table>
-      {<ParticipantsModal isModalOpen={isModalOpen} toggleModal={toggleModal} modalData={modalData}/>}
+      {
+        <ParticipantsModal
+          isModalOpen={isModalOpen}
+          toggleModal={toggleModal}
+          modalData={modalData}
+        />
+      }
     </div>
   );
 };

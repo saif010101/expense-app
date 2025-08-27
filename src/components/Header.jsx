@@ -8,7 +8,7 @@ const Header = ({firstName,handleAddMealClick}) => {
         </h1>
         <button
           onClick={handleAddMealClick}
-          className="font-[500] text-sm bg-white cursor-pointer text-nowrap px-[clamp(0.875rem,4vw,2rem)] py-[clamp(0.275rem,2vw,.5rem)] rounded-lg"
+          className="font-[500] text-sm bg-white cursor-pointer text-nowrap px-[clamp(0.575rem,2.25vw,2rem)] py-[clamp(0.275rem,2vw,.5rem)] rounded-lg"
         >
           + Add Meal
         </button>

@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import "./index.css";
@@ -8,7 +8,10 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Meals from "./pages/Meals.jsx";
 
 function App() {
-  // TODO : fetch students name from database instead of hardcoding it
+  // TODOS : fetch students name from database instead of hardcoding it
+  // add a close button to add meal form
+
+  // Problems : when we add a meal using meal form, there is no default value for 'paid_by'
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     paid_by: "",
@@ -23,11 +26,11 @@ function App() {
     description: "null",
   });
 
-  const isStudentCheckBox = (targetElement) => {
+  const isStudentCheckBox = targetElement => {
     return targetElement.type === "checkbox";
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     // target element name
     const targetElement = e.target;
 
@@ -40,6 +43,7 @@ function App() {
           [targetElement.name]: e.target.checked,
         },
       });
+      
     else setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -47,6 +51,7 @@ function App() {
     setIsModalOpen((prev) => !prev);
   };
 
+  // POST request made to the API to submit meal data
   const handleMealSubmit = () => {
     axios.post("http://localhost:3000/addmeal", formData);
     toggleModal();

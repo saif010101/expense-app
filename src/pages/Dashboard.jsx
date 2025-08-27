@@ -14,24 +14,25 @@ export default function Dashboard({handleAddMealClick}) {
   useEffect(() => {
 
     const userName = 'p230672';
+    const databaseHost = '192.168.1.10:3000';
 
     const getToPayData = async () => {
-      const records = await axios.get(`http://localhost:3000/${userName}/pay`);
+      const records = await axios.get(`http://${databaseHost}/${userName}/pay`);
       setToPayRecords(records.data);
     };
 
     const getToReceiveData = async () => {
-      const records = await axios.get(`http://localhost:3000/${userName}/receive`);
+      const records = await axios.get(`http://${databaseHost}/${userName}/receive`);
       setToReceiveRecords(records.data);
     };
 
     const getNetAmount = async () => {
-      const amount = await axios.get(`http://localhost:3000/${userName}/net`);
+      const amount = await axios.get(`http://${databaseHost}/${userName}/net`);
       setNetBalance(amount.data);
     }
 
     const getFirstName = async () => {
-      const fname = await axios.get(`http://localhost:3000/${userName}/fname`);
+      const fname = await axios.get(`http://${databaseHost}/${userName}/fname`);
       setFirstName(fname.data);
     }
 
@@ -45,7 +46,7 @@ export default function Dashboard({handleAddMealClick}) {
   return (
     <main className="m-5 p-[clamp(0rem,4vw,17rem)]">
       <Header firstName={firstName} handleAddMealClick={handleAddMealClick}/>
-      {/* <NetBalanceCard netBalance={netBalance}/> */}
+      <NetBalanceCard netBalance={netBalance}/>
       <div className="grid sm:grid-cols-2 gap-2">
         <Card heading={"To Pay"} data={toPayRecords}/>
         <Card heading={"To Receive"} data={toReceiveRecords}/>

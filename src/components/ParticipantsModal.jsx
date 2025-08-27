@@ -6,12 +6,12 @@ export default function ParticipantsModal({isModalOpen = false,toggleModal,modal
         <div className="self-start min-w-[250px] min-h-[100px] mt-30 p-4 rounded-lg bg-white">
           <h1 className="text-center text-xl font-bold">{modalData.description}</h1>
           <p className="text-center text-sm font-bold mb-4">
-            (Monday, June 2025)
+            {modalData.dateInEnglish && `(${modalData.dateInEnglish.day}, ${modalData.dateInEnglish.month} ${modalData.dateInEnglish.year})`}
           </p>
           <p className="text-lg font-bold">Participants</p>
           <ul>
               {modalData.participants && modalData.participants.map(participant => (
-                <li>{participant.fname}</li>
+                <li>{participant.fname} {participant.role === "payer" && <span className="text-[.8rem] font-bold ml-1 bg-green-300 p-[0.25rem] rounded-lg">Payer</span>}</li>
               ))}
           </ul>
           <p className="text-center text-lg font-bold my-1">Total : PKR {modalData.total}</p>
