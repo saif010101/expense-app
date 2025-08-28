@@ -1,15 +1,26 @@
 @import "tailwindcss";
+@custom-variant hover (&:hover);
+
+:root {
+  --bg-green-dark : rgb(1, 191, 55);
+  --bg-green-light : rgb(85, 246, 139);
+}
 
 body {
-  background: linear-gradient(rgb(1, 191, 55), rgb(85, 246, 139)),
+  background: linear-gradient(var(--bg-green-dark), var(--bg-green-light)),
     url(./assets/always-grey.png);
 
   min-height: 100vh;
   background-blend-mode: overlay;
 }
 
+
 [data-modal-wrapper="active"],
 [data-participants-modal-wrapper="active"] {
   opacity: 1;
   pointer-events: auto;
+}
+
+[data-success-popup="active"] {
+  /* add transition here */
 }

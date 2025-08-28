@@ -34,7 +34,7 @@ const Meals = () => {
   const [mealsData, setMealsData] = useState([]);
   const [modalData, setmodalData] = useState({});
 
-  const databaseHost = "192.168.1.3:3000";
+  const databaseHost = "localhost:3000";
 
   // fetch meals data from database
   useEffect(() => {

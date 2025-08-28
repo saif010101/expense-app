@@ -5,9 +5,11 @@ export default function Modal({
   handleMealSubmit,
   handleChange,
   isModalOpen = false,
+  paid_by = '',
+  toggleModal
 }) {
   const [studentsData, setStudentsData] = useState([]);
-  const databaseHost = "192.168.1.3:3000";
+  const databaseHost = "localhost:3000";
   useEffect(() => {
     const getStudentsData = async () => {
       const records = await axios.get(`http://${databaseHost}/students`);
@@ -64,15 +66,15 @@ export default function Modal({
 
           <div className="flex flex-col gap-2 my-3">
             <span className="font-[600]">Participated</span>
-            {studentsData.map(student => (
+            {studentsData.filter(std => std.username !== paid_by).map(student => (
               <div>
                 <input
                   onChange={handleChange}
                   type="checkbox"
                   id={student.username}
+                  name={student.username}
                 />
                 <label
-                  onChange={handleChange}
                   className="ml-2 font-[500]"
                   htmlFor={student.username}
                 >
@@ -96,11 +98,11 @@ export default function Modal({
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={handleMealSubmit}
-              className="font-[500] text-sm bg-green-400 hover:bg-green-300 px-3 py-2 cursor-pointer rounded-lg"
+              className="font-[500] bg-green-400 hover:bg-green-300 px-3 py-2 cursor-pointer rounded-lg"
             >
               Add Meal
             </button>
-            <button className="font-[500] py-1 bg-transparent border-2 border-green-400 hover:bg-blue-400 rounded-md">
+            <button onClick={toggleModal} className="font-[500] py-1 bg-transparent hover:bg-green-300 border-2 border-green-400  cursor-pointer rounded-md">
               Close
             </button>
           </div>

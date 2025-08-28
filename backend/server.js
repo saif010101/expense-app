@@ -20,7 +20,7 @@ app.listen(3000, () => console.log("server is running at port 3000."));
 app.get("/:username/pay", async (req, res) => {
 
   const userName = req.params.username;
-  // console.log(userName);
+  
     // To Pay Section Data
   const data =
     await db.query(`SELECT fname,amount 
@@ -81,6 +81,7 @@ app.post("/addmeal", async (req,res) => {
   console.log(formData);
   // Add payer first
   const test = await db.query(`INSERT INTO students_meals VALUES ('${formData.paid_by}',${meal_id},'payer')`);
+  console.log(participatedStudents);
   // add participants
   for (const username in participatedStudents) {
     if (participatedStudents[username]){
@@ -111,7 +112,6 @@ app.get("/:meal_id/participants", async (req,res) => {
 app.get("/students",async (req,res) => {
   const response = await db.query("SELECT * from students");
   res.json(response[0]);
-
 })
 
 

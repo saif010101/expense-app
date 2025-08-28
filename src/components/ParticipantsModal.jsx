@@ -8,9 +8,9 @@ export default function ParticipantsModal({isModalOpen = false,toggleModal,modal
             {modalData.dateInEnglish && `(${modalData.dateInEnglish.day}, ${modalData.dateInEnglish.month} ${modalData.dateInEnglish.year})`}
           </p>
           <p className="text-lg font-bold">Participants</p>
-          <ul>
+          <ul className="flex flex-col gap-1">
               {modalData.participants && modalData.participants.map(participant => (
-                <li>{participant.fname} {participant.role === "payer" && <span className="text-[.8rem] font-bold ml-1 bg-green-300 p-[0.25rem] rounded-lg">Payer</span>}</li>
+                <li>{participant.fname} {participant.role === "payer" && <span className="text-[.725rem] font-bold ml-1 bg-green-300 p-[0.25rem] rounded-lg">Payer</span>}</li>
               ))}
           </ul>
           <p className="text-center text-lg font-bold my-1">Total : PKR {modalData.total}</p>
