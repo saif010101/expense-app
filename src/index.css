@@ -21,6 +21,25 @@ body {
   pointer-events: auto;
 }
 
-[data-success-popup="active"] {
-  /* add transition here */
+[data-success-popup="toggle"] {
+  animation: successPopupReveal 2.75s ease-in-out 0.2s;
+}
+
+
+@keyframes successPopupReveal {
+    0% {
+      top : -4rem;
+    }
+
+    20% {
+      top : 2rem;
+    }
+
+    80% {
+      top : 2rem;
+    } 
+
+    100% {
+      top : -4rem;
+    }
 }

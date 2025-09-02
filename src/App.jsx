@@ -5,15 +5,13 @@ import Navbar from "./components/Navbar.jsx";
 import Modal from "./components/Modal.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Meals from "./pages/Meals.jsx";
-import SuccessPopUp from "./components/SuccessPopUp.jsx";
+import SuccessToast from "./components/SuccessToast.jsx";
 import "./index.css";
 
 function App() {
   const databaseHost = 'localhost:3000';
-  // TODOS : fetch students name from database instead of hardcoding it
-  // add a close button to add meal form
-  
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const [isSuccessToastVisible, setSuccessToastVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     paid_by: "p230512",
@@ -28,7 +26,6 @@ function App() {
     description: "null",
   });
   
-  console.log(formData);
   const isStudentCheckBox = targetElement => {
     return targetElement.type === "checkbox";
   };
@@ -39,7 +36,6 @@ function App() {
 
     // check if given input tag is related to checkbox elements
     if (isStudentCheckBox(targetElement))
-      // console.log("here")
       setFormData({
         ...formData,
         participated: {
@@ -55,20 +51,21 @@ function App() {
     setIsModalOpen(prev => !prev);
   };
 
-  const toggleSuccessPopUp = () => {
-    setIsPopupVisible(prev => !prev);
+  const toggleSuccessToast = () => {
+    setSuccessToastVisible(true);
+    setTimeout(() => {setSuccessToastVisible(false)},3000);
   }
 
   // POST request made to the API to submit meal data
   const handleMealSubmit = () => {
     axios.post(`http://${databaseHost}/addmeal`, formData);
     toggleModal();
-    toggleSuccessPopUp();
+    toggleSuccessToast();
   };
 
   return (
     <>
-      <SuccessPopUp isPopupVisible={isPopupVisible} />
+      <SuccessToast successToastVisible={isSuccessToastVisible} />
       <Navbar /> 
       <Routes>
         <Route path="/meals" element={<Meals />}></Route>

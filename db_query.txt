@@ -1,0 +1,3 @@
+net amount query :
+
+SELECT ((SELECT SUM(amount) FROM to_pay WHERE payer_id = 'p230614' GROUP BY receiver_id HAVING receiver_id = 'p230512') - (SELECT SUM(amount) FROM to_pay WHERE payer_id = 'p230512' GROUP BY receiver_id HAVING receiver_id = 'p230614')) AS net_amount FROM DUAL

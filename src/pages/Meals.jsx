@@ -51,7 +51,6 @@ const Meals = () => {
   };
 
   const getModalData = async (meal_id) => {
-    // TODO : get day and month from date
 
     // Get Meal Description and Amount
     const mealData = mealsData.find((meal) => meal.meal_id === meal_id);
@@ -76,7 +75,7 @@ const Meals = () => {
   return (
     <div className="shadow-lg rounded-lg w-fit mx-auto overflow-hidden">
       <table className="w-[90vw] max-w-[700px] text-center bg-white">
-        <thead className="">
+        <thead className="text-white bg-green-900">
           <tr>
             <th className="px-2 py-1">Description</th>
             <th className="px-2 py-1">Amount</th>
@@ -86,7 +85,7 @@ const Meals = () => {
         </thead>
         <tbody className="rounded-md text-sm sm:text-lg">
           {mealsData.map((meal) => (
-            <tr className="even:bg-green-200">
+            <tr className="even:bg-green-300">
               <td className="px-2 py-3">{meal.description}</td>
               <td className="px-2 py-3">{meal.total}</td>
               <td className="px-2 py-3">2025-08-17</td>
@@ -104,13 +103,11 @@ const Meals = () => {
           ))}
         </tbody>
       </table>
-      {
         <ParticipantsModal
           isModalOpen={isModalOpen}
           toggleModal={toggleModal}
           modalData={modalData}
         />
-      }
     </div>
   );
 };

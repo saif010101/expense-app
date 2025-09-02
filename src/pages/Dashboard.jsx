@@ -16,15 +16,11 @@ export default function Dashboard({handleAddMealClick}) {
     const userName = 'p230512';
     const databaseHost = 'localhost:3000';
 
-    const getToPayData = async () => {
-      const records = await axios.get(`http://${databaseHost}/${userName}/pay`);
-      setToPayRecords(records.data);
-    };
-
-    const getToReceiveData = async () => {
-      const records = await axios.get(`http://${databaseHost}/${userName}/receive`);
-      setToReceiveRecords(records.data);
-    };
+    const getData = async () => {
+      const records = await axios.get(`http://${databaseHost}/${userName}/account`);
+      setToPayRecords(records.data.to_pay);
+      setToReceiveRecords(records.data.to_receive);
+    }
 
     const getNetAmount = async () => {
       const amount = await axios.get(`http://${databaseHost}/${userName}/net`);
@@ -36,10 +32,10 @@ export default function Dashboard({handleAddMealClick}) {
       setFirstName(fname.data);
     }
 
-    getToPayData();
-    getToReceiveData();
+    getData();
     getNetAmount();
     getFirstName();
+    
   },[]);
 
 
