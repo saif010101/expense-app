@@ -11,7 +11,9 @@ import "./index.css";
 function App() {
   const databaseHost = 'localhost:3000';
 
+  const [refreshKey,setRefreshKey] = useState(0);
   const [isSuccessToastVisible, setSuccessToastVisible] = useState(false);
+  const [isClearDataToastVisible, setClearDataToastVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     paid_by: "p230512",
@@ -55,23 +57,29 @@ function App() {
     setSuccessToastVisible(true);
     setTimeout(() => {setSuccessToastVisible(false)},3000);
   }
+  const toggleClearDataToast = () => {
+    setClearDataToastVisible(true);
+    setTimeout(() => {setSuccessToastVisible(false)},3000);
+  }
 
   // POST request made to the API to submit meal data
   const handleMealSubmit = () => {
     axios.post(`http://${databaseHost}/addmeal`, formData);
     toggleModal();
     toggleSuccessToast();
+    setRefreshKey(refreshKey + 1); // trigger refresh
   };
 
   return (
     <>
-      <SuccessToast successToastVisible={isSuccessToastVisible} />
+      <SuccessToast visibility={isSuccessToastVisible} message="Meal data added successfully." />
+      <SuccessToast visibility={isClearDataToastVisible} message="Khata cleared successfully." />
       <Navbar /> 
       <Routes>
         <Route path="/meals" element={<Meals />}></Route>
         <Route
           path="/"
-          element={<Dashboard handleAddMealClick={toggleModal} />}
+          element={<Dashboard refreshKey={refreshKey} handleAddMealClick={toggleModal} toggleClearDataToast={toggleClearDataToast}/>}
         ></Route>
       </Routes>
       <Modal

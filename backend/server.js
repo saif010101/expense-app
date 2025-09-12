@@ -12,6 +12,7 @@ const db = mysql
     user: "root",
     password: "root",
     database: "roommates_db",
+    dateStrings : true
   })
   .promise();
 
@@ -54,18 +55,22 @@ app.get("/:username/account", async (req, res) => {
           const net_amount = toReceiveAmount[0].amount - toPayAmount[0].amount;
 
           if (net_amount > 0)
-            toReceive.push({ fname: student.fname, amount: net_amount });
+            toReceive.push({ fname: student.fname, amount: net_amount,
+          username : student.username });
           else
-            toPay.push({ fname: student.fname, amount: Math.abs(net_amount) });
+            toPay.push({ fname: student.fname, amount: Math.abs(net_amount),
+          username : student.username });
         } else if (toReceiveAmount.length > 0 && toPayAmount.length === 0) {
           toReceive.push({
             fname: student.fname,
             amount: Number(toReceiveAmount[0].amount),
+            username : student.username
           });
         } else if (toPayAmount.length > 0 && toReceiveAmount.length === 0) {
           toPay.push({
             fname: student.fname,
             amount: Number(toPayAmount[0].amount),
+            username : student.username
           });
         }
       })
@@ -77,29 +82,17 @@ app.get("/:username/account", async (req, res) => {
   res.json({ to_pay: toPay, to_receive: toReceive });
 });
 
-app.get("/:username/net", async (req, res) => {
-  const userName = req.params.username;
-  // To Pay Section Data
-  const to_pay_res = await db.query(
-    `SELECT SUM(amount) as to_pay_amount FROM to_pay WHERE payer_id = '${userName}';`
-  );
-  const to_receive_res = await db.query(
-    `SELECT SUM(amount) to_receive_amount FROM to_pay WHERE receiver_id = '${userName}';`
-  );
-
-  const { to_pay_amount } = to_pay_res[0][0];
-  const { to_receive_amount } = to_receive_res[0][0];
-
-  res.send(to_receive_amount - to_pay_amount);
-});
-
 app.get("/:username/fname", async (req, res) => {
-  const userName = req.params.username;
-  const response = await db.query(
-    `SELECT fname as first_name FROM students WHERE username = '${userName}'`
-  );
-  const { first_name } = response[0][0];
-  res.send(first_name);
+  try {
+    const userName = req.params.username;
+    const response = await db.query(
+      `SELECT fname as first_name FROM students WHERE username = '${userName}'`
+    );
+    const { first_name } = response[0][0];
+    res.send(first_name);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 const countStudents = (participatedStudents) => {
@@ -148,8 +141,8 @@ app.post("/addmeal", async (req, res) => {
 
 app.get("/meals", async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM meals");
-    res.json(response[0]);
+    const [response] = await db.query("SELECT * FROM meals");
+    res.json(response);
   } catch (err) {
     console.error(err);
   }
@@ -172,6 +165,22 @@ app.get("/students", async (req, res) => {
   try {
     const response = await db.query("SELECT * from students");
     res.json(response[0]);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+
+app.delete("/:primaryUser/:secondaryUser/clearAccount", async (req,res) => {
+  try {
+    const primaryUser = req.params.primaryUser;
+    const secondaryUser = req.params.secondaryUser;
+
+    // clear khata with user
+    await db.query(`DELETE FROM 
+      to_pay 
+      WHERE (receiver_id = '${primaryUser}' AND payer_id = '${secondaryUser}') 
+      OR (receiver_id = '${secondaryUser}' AND payer_id = '${primaryUser}')`);
   } catch (err) {
     console.error(err);
   }

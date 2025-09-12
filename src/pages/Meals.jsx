@@ -40,6 +40,7 @@ const Meals = () => {
   useEffect(() => {
     const getMealsData = async () => {
       const records = await axios.get(`http://${databaseHost}/meals`);
+      console.log(records.data);
       setMealsData(records.data);
     };
 
@@ -47,13 +48,13 @@ const Meals = () => {
   }, []);
 
   const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
+    setIsModalOpen(prev => !prev);
   };
 
-  const getModalData = async (meal_id) => {
+  const getModalData = async meal_id => {
 
     // Get Meal Description and Amount
-    const mealData = mealsData.find((meal) => meal.meal_id === meal_id);
+    const mealData = mealsData.find(meal => meal.meal_id === meal_id);
     const date = mealData.date.slice(0, 10);
     const dateObj = new Date(date);
 
@@ -67,7 +68,7 @@ const Meals = () => {
       month: months[dateObj.getMonth()],
       year: dateObj.getFullYear(),
     };
-    console.log(mealData);
+
     setmodalData(mealData);
     toggleModal();
   };
@@ -88,7 +89,7 @@ const Meals = () => {
             <tr className="even:bg-green-300">
               <td className="px-2 py-3">{meal.description}</td>
               <td className="px-2 py-3">{meal.total}</td>
-              <td className="px-2 py-3">2025-08-17</td>
+              <td className="px-2 py-3">{meal.date}</td>
               <td className="cursor-pointer p-1">
                 <span
                   onClick={() => {
