@@ -12,17 +12,17 @@ export default function Dashboard({handleAddMealClick,refreshKey,toggleClearData
 
   useEffect(() => {
 
-    const userName = 'p230613';
+    const userName = 'p230672';
     const databaseHost = 'localhost:3000';
 
     const getData = async () => {
-      const records = await axios.get(`http://${databaseHost}/${userName}/account`);
+      const records = await axios.get(`http://${databaseHost}/students/${userName}/khata`);
       setToPayRecords(records.data.to_pay);
       setToReceiveRecords(records.data.to_receive);
     }
 
     const getFirstName = async () => {
-      const fname = await axios.get(`http://${databaseHost}/${userName}/fname`);
+      const fname = await axios.get(`http://${databaseHost}/students/${userName}/fname`);
       setFirstName(fname.data);
     }
 

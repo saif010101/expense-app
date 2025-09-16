@@ -48,18 +48,17 @@ const Meals = () => {
   }, []);
 
   const toggleModal = () => {
-    setIsModalOpen(prev => !prev);
+    setIsModalOpen((prev) => !prev);
   };
 
-  const getModalData = async meal_id => {
-
+  const getModalData = async (meal_id) => {
     // Get Meal Description and Amount
-    const mealData = mealsData.find(meal => meal.meal_id === meal_id);
+    const mealData = mealsData.find((meal) => meal.meal_id === meal_id);
     const date = mealData.date.slice(0, 10);
     const dateObj = new Date(date);
 
     const participantsData = await axios.get(
-      `http://${databaseHost}/${meal_id}/participants`
+      `http://${databaseHost}/meals/${meal_id}/participants`
     );
 
     mealData.participants = participantsData.data;
@@ -104,11 +103,12 @@ const Meals = () => {
           ))}
         </tbody>
       </table>
-        <ParticipantsModal
-          isModalOpen={isModalOpen}
-          toggleModal={toggleModal}
-          modalData={modalData}
-        />
+      {mealsData.length === 0 && <p className="bg-white text-center">No Records Found</p>}
+      <ParticipantsModal
+        isModalOpen={isModalOpen}
+        toggleModal={toggleModal}
+        modalData={modalData}
+      />
     </div>
   );
 };

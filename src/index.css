@@ -25,6 +25,14 @@ body {
   animation: successPopupReveal 2.75s ease-in-out 0.2s;
 }
 
+[data-dropdown-visible="true"] {
+  opacity : 1;
+}
+
+[data-caret-active="true"] {
+  transform : rotate(180deg);
+}
+
 
 @keyframes successPopupReveal {
     0% {

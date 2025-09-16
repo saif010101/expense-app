@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const Card = ({heading,data,toggleClearDataToast,toggleRefresh}) => {
-  const fn = username => {
+  const fn = async username => {
     console.log("here->",username);
-    axios.delete(`http://localhost:3000/p230613/${username}/clearAccount`);
+    await axios.delete(`http://localhost:3000/students/p230672/${username}/clearKhata`);
     toggleClearDataToast();
     toggleRefresh();
   }

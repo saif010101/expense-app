@@ -5,13 +5,16 @@ import Navbar from "./components/Navbar.jsx";
 import Modal from "./components/Modal.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Meals from "./pages/Meals.jsx";
+import Login from "./pages/Login.jsx";
 import SuccessToast from "./components/SuccessToast.jsx";
+import Profile from "./components/Profile.jsx";
 import "./index.css";
 
 function App() {
-  const databaseHost = 'localhost:3000';
+  const databaseHost = "localhost:3000";
 
-  const [refreshKey,setRefreshKey] = useState(0);
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [isSuccessToastVisible, setSuccessToastVisible] = useState(false);
   const [isClearDataToastVisible, setClearDataToastVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,16 +26,16 @@ function App() {
       p230627: false,
       p230614: false,
       p230672: false,
-      p230613: false,
+      p230519: false,
     },
     description: "null",
   });
-  
-  const isStudentCheckBox = targetElement => {
+
+  const isStudentCheckBox = (targetElement) => {
     return targetElement.type === "checkbox";
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     // target element name
     const targetElement = e.target;
 
@@ -45,26 +48,29 @@ function App() {
           [targetElement.name]: targetElement.checked,
         },
       });
-      
     else setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const toggleModal = () => {
-    setIsModalOpen(prev => !prev);
+    setIsModalOpen((prev) => !prev);
   };
 
   const toggleSuccessToast = () => {
     setSuccessToastVisible(true);
-    setTimeout(() => {setSuccessToastVisible(false)},3000);
-  }
+    setTimeout(() => {
+      setSuccessToastVisible(false);
+    }, 3000);
+  };
   const toggleClearDataToast = () => {
     setClearDataToastVisible(true);
-    setTimeout(() => {setSuccessToastVisible(false)},3000);
-  }
+    setTimeout(() => {
+      setSuccessToastVisible(false);
+    }, 3000);
+  };
 
   // POST request made to the API to submit meal data
-  const handleMealSubmit = () => {
-    axios.post(`http://${databaseHost}/addmeal`, formData);
+  const handleMealSubmit = async () => {
+    await axios.post(`http://${databaseHost}/meals/add`, formData);
     toggleModal();
     toggleSuccessToast();
     setRefreshKey(refreshKey + 1); // trigger refresh
@@ -72,15 +78,32 @@ function App() {
 
   return (
     <>
-      <SuccessToast visibility={isSuccessToastVisible} message="Meal data added successfully." />
-      <SuccessToast visibility={isClearDataToastVisible} message="Khata cleared successfully." />
-      <Navbar /> 
+      <SuccessToast
+        visibility={isSuccessToastVisible}
+        message="Meal data added successfully."
+      />
+      <SuccessToast
+        visibility={isClearDataToastVisible}
+        message="Khata cleared successfully."
+      />
+      {isLoggedIn && <Navbar />}
       <Routes>
         <Route path="/meals" element={<Meals />}></Route>
         <Route
           path="/"
-          element={<Dashboard refreshKey={refreshKey} handleAddMealClick={toggleModal} toggleClearDataToast={toggleClearDataToast}/>}
+          element={
+            isLoggedIn ? (
+              <Dashboard
+                refreshKey={refreshKey}
+                handleAddMealClick={toggleModal}
+                toggleClearDataToast={toggleClearDataToast}
+              />
+            ) : (
+              <Login />
+            )
+          }
         ></Route>
+        <Route path="/login" element={<Login />}></Route>
       </Routes>
       <Modal
         handleMealSubmit={handleMealSubmit}

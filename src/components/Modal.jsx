@@ -12,7 +12,7 @@ export default function Modal({
   const databaseHost = "localhost:3000";
   useEffect(() => {
     const getStudentsData = async () => {
-      const records = await axios.get(`http://${databaseHost}/students`);
+      const records = await axios.get(`http://${databaseHost}/students/`);
       setStudentsData(records.data);
     };
 
