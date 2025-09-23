@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./components/Navbar.jsx";
@@ -7,13 +7,14 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Meals from "./pages/Meals.jsx";
 import Login from "./pages/Login.jsx";
 import SuccessToast from "./components/SuccessToast.jsx";
-import Profile from "./components/Profile.jsx";
 import "./index.css";
 
 function App() {
-  const databaseHost = "localhost:3000";
 
-  const [isLoggedIn, setLoggedIn] = useState(true);
+  
+  const databaseHost = "localhost:3000";
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [isSuccessToastVisible, setSuccessToastVisible] = useState(false);
   const [isClearDataToastVisible, setClearDataToastVisible] = useState(false);
@@ -30,7 +31,28 @@ function App() {
     },
     description: "null",
   });
+  
+  const toggleLoginState = () => {
+    setIsLoggedIn(true);
+  }
 
+  useEffect(() => {
+    const validateLogin = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/",{withCredentials: true});
+        toggleLoginState();
+      } catch (err) {    
+
+        if (err.response.status !== 200) {
+          navigate("/login");
+        }
+      }
+    
+    }
+    validateLogin(); 
+
+  },[])
+  
   const isStudentCheckBox = (targetElement) => {
     return targetElement.type === "checkbox";
   };
@@ -76,6 +98,7 @@ function App() {
     setRefreshKey(refreshKey + 1); // trigger refresh
   };
 
+
   return (
     <>
       <SuccessToast
@@ -97,13 +120,14 @@ function App() {
                 refreshKey={refreshKey}
                 handleAddMealClick={toggleModal}
                 toggleClearDataToast={toggleClearDataToast}
+                toggleLoginState={toggleLoginState}
               />
             ) : (
-              <Login />
+              <Login toggleLoginState={toggleLoginState}/>
             )
           }
         ></Route>
-        <Route path="/login" element={<Login />}></Route>
+        <Route path="/login" element={<Login toggleLoginState={toggleLoginState} />}></Route>
       </Routes>
       <Modal
         handleMealSubmit={handleMealSubmit}

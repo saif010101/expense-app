@@ -3,10 +3,23 @@ import cors from "cors";
 import mysql from "mysql2";
 import studentsRouter from "../src/routes/student.route.js";
 import mealRouter from "../src/routes/meal.route.js";
+import session from "express-session";
+import dashboardRouter from "../src/routes/dashboard.route.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin : "http://localhost:5173",
+  credentials: true
+}));
 app.use(express.json());
+app.use(
+  session({
+    secret: "abcd",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
 
 const db = mysql
   .createConnection({
@@ -14,16 +27,14 @@ const db = mysql
     user: "root",
     password: "root",
     database: "roommates_db",
-    dateStrings : true
+    dateStrings: true,
   })
   .promise();
 
 app.listen(3000, () => console.log("server is running at port 3000."));
 
+app.use("/students", studentsRouter);
+app.use("/meals", mealRouter);
+app.use("/",dashboardRouter);
 
-app.use("/students",studentsRouter);
-app.use("/meals",mealRouter);
-
-
-
-export {db};
+export { db };

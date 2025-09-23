@@ -40,7 +40,6 @@ const Meals = () => {
   useEffect(() => {
     const getMealsData = async () => {
       const records = await axios.get(`http://${databaseHost}/meals`);
-      console.log(records.data);
       setMealsData(records.data);
     };
 

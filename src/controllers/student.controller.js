@@ -1,5 +1,21 @@
 import { db } from "../../backend/server.js";
 
+const validateLogin = async (req,res) => {
+  
+  const {username, password} = req.body;
+  const [response] = await db.query(`SELECT * FROM students WHERE username = '${username}' AND password = '${password}'`);
+  
+  // if user is found in the database
+  if (response.length > 0) {
+    req.session.username = username;
+    res.status(200).send("logged in");
+  } else {
+    res.status(401).send("not logged in");
+  }
+
+
+};
+
 const getAllStudents = async (req, res) => {
   try {
     const response = await db.query("SELECT * from students");
@@ -108,4 +124,4 @@ const clearKhata = async (req, res) => {
   }
 };
 
-export { getAllStudents, getFirstName, getKhata, clearKhata };
+export { getAllStudents, getFirstName, getKhata, clearKhata,validateLogin };

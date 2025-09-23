@@ -1,20 +1,30 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({toggleLoginState}) => {
   
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async e => {
-    // e.preventDefault();
-    const response = await axios.post("http:localhost:3000/login1", {username,password});
-    console.log(response);
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:3000/students/login", {username,password},{withCredentials: true});
+      if (response.status === 200){
+        toggleLoginState();
+        navigate("/");
+      } 
+    } catch (err) {
+        if (err.response.status === 401) console.log("login failed");
+    }
+    
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="bg-white text-black p-8 rounded-2xl shadow-lg w-96">
+      <div className="bg-white text-black p-8 rounded-2xl shadow-lg w-80 md:w-96">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form onSubmit={handleLogin} className="space-y-4">
           <div>

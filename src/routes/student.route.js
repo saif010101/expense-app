@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { clearKhata, getAllStudents, getFirstName, getKhata} from "../controllers/student.controller.js";
+import { clearKhata, getAllStudents, getFirstName, getKhata, validateLogin} from "../controllers/student.controller.js";
+import authLogin from "../middlewares/authLogin.js";
 
 const router = Router();
 
@@ -8,5 +9,6 @@ router.get("/",getAllStudents);
 router.get("/:username/fname",getFirstName);
 router.get("/:username/khata",getKhata);
 router.delete("/:firstStudent/:secondStudent/clearKhata",clearKhata);
+router.post("/login",validateLogin);
 
 export default router;
