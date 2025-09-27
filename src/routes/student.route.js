@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { clearKhata, getAllStudents, getFirstName, getKhata, validateLogin} from "../controllers/student.controller.js";
-import authLogin from "../middlewares/authLogin.js";
 
 const router = Router();
 

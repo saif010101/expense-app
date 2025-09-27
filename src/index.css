@@ -33,6 +33,11 @@ body {
   transform : rotate(180deg);
 }
 
+[data-pagination-selected="true"]{
+  background-color: rgb(8, 129, 42);
+  color : white;
+}
+
 
 @keyframes successPopupReveal {
     0% {

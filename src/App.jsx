@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./components/Navbar.jsx";
 import Modal from "./components/Modal.jsx";
@@ -10,10 +10,10 @@ import SuccessToast from "./components/SuccessToast.jsx";
 import "./index.css";
 
 function App() {
-
+  console.log("here")
   
   const databaseHost = "localhost:3000";
-  
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [isSuccessToastVisible, setSuccessToastVisible] = useState(false);
@@ -32,15 +32,21 @@ function App() {
     description: "null",
   });
   
-  const toggleLoginState = () => {
+  const toggleLoginStateTrue = () => {
     setIsLoggedIn(true);
+  }
+  const toggleLoginStateFalse = () => {
+    setIsLoggedIn(false);
   }
 
   useEffect(() => {
     const validateLogin = async () => {
       try {
         const response = await axios.get("http://localhost:3000/",{withCredentials: true});
-        toggleLoginState();
+        if (response.status === 200) {
+          console.log("hihaaa");
+          toggleLoginStateTrue();
+        }
       } catch (err) {    
 
         if (err.response.status !== 200) {
@@ -109,7 +115,7 @@ function App() {
         visibility={isClearDataToastVisible}
         message="Khata cleared successfully."
       />
-      {isLoggedIn && <Navbar />}
+      {isLoggedIn && <Navbar toggleLoginStateFalse={toggleLoginStateFalse}/>}
       <Routes>
         <Route path="/meals" element={<Meals />}></Route>
         <Route
@@ -120,14 +126,13 @@ function App() {
                 refreshKey={refreshKey}
                 handleAddMealClick={toggleModal}
                 toggleClearDataToast={toggleClearDataToast}
-                toggleLoginState={toggleLoginState}
               />
             ) : (
-              <Login toggleLoginState={toggleLoginState}/>
+              <Login toggleLoginStateTrue={toggleLoginStateTrue}/>
             )
           }
         ></Route>
-        <Route path="/login" element={<Login toggleLoginState={toggleLoginState} />}></Route>
+        <Route path="/login" element={<Login toggleLoginStateTrue={toggleLoginStateTrue} />}></Route>
       </Routes>
       <Modal
         handleMealSubmit={handleMealSubmit}

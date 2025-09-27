@@ -11,4 +11,15 @@ const getUsername = (req,res) => {
     }
 }
 
-export {showDashboard,getUsername};
+const logoutUser = (req,res) => {
+
+    req.session.destroy(err => {
+        if (err) {
+            res.status(500).send("masla hai")
+        }
+        res.clearCookie('saif', { path: '/', httpOnly: true,secure:false});
+        res.redirect('http://localhost:5173/login');
+    });
+}
+
+export {showDashboard,getUsername,logoutUser};

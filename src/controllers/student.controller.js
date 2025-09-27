@@ -1,10 +1,11 @@
 import { db } from "../../backend/server.js";
 
-const validateLogin = async (req,res) => {
-  
-  const {username, password} = req.body;
-  const [response] = await db.query(`SELECT * FROM students WHERE username = '${username}' AND password = '${password}'`);
-  
+const validateLogin = async (req, res) => {
+  const { username, password } = req.body;
+  const [response] = await db.query(
+    `SELECT * FROM students WHERE username = '${username}' AND password = '${password}'`
+  );
+
   // if user is found in the database
   if (response.length > 0) {
     req.session.username = username;
@@ -12,8 +13,6 @@ const validateLogin = async (req,res) => {
   } else {
     res.status(401).send("not logged in");
   }
-
-
 };
 
 const getAllStudents = async (req, res) => {
@@ -31,15 +30,17 @@ const getFirstName = async (req, res) => {
     const response = await db.query(
       `SELECT fname as first_name FROM students WHERE username = '${userName}'`
     );
+
     const { first_name } = response[0][0];
-    res.send(first_name);
+    res.status(200).send(first_name);
   } catch (err) {
-    console.error(err);
+    res.status(404).send("something went wrong");
   }
 };
 
 const getKhata = async (req, res) => {
   const userName = req.params.username;
+
 
   // To Pay Section Data
   const [students] = await db.query(
@@ -105,7 +106,7 @@ const getKhata = async (req, res) => {
 
   await test2();
 
-  res.json({ to_pay: toPay, to_receive: toReceive });
+  res.status(200).json({ to_pay: toPay, to_receive: toReceive });
 };
 
 const clearKhata = async (req, res) => {
@@ -118,10 +119,10 @@ const clearKhata = async (req, res) => {
       to_pay 
       WHERE (receiver_id = '${firstStudent}' AND payer_id = '${secondStudent}') 
       OR (receiver_id = '${secondStudent}' AND payer_id = '${firstStudent}')`);
-      res.send("done");
+    res.send("done");
   } catch (err) {
     console.error(err);
   }
 };
 
-export { getAllStudents, getFirstName, getKhata, clearKhata,validateLogin };
+export { getAllStudents, getFirstName, getKhata, clearKhata, validateLogin };

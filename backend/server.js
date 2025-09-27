@@ -14,7 +14,8 @@ app.use(cors({
 app.use(express.json());
 app.use(
   session({
-    secret: "abcd",
+    name: 'saif',
+    secret: "bxc",
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },

@@ -1,32 +1,40 @@
 import { useState,useEffect } from "react";
 import Header from "../components/Header.jsx";
 import Card from "../components/Card.jsx";
-import { useNavigate } from "react-router-dom";
 import { useSession } from "../hooks/useSession.js";
 import axios from "axios";
 
-export default function Dashboard({handleAddMealClick,refreshKey,toggleClearDataToast,toggleLoginState}) {
+export default function Dashboard({handleAddMealClick,refreshKey,toggleClearDataToast}) {
   
-
   const userName = useSession();  // fetch username from session
   const [refreshOnClear,setRefreshOnClear] = useState(0);
   const [toPayRecords,setToPayRecords] = useState([]);
-  const [toReceiveRecords,sxetToReceiveRecords] = useState([]);
+  const [toReceiveRecords,setToReceiveRecords] = useState([]);
   const [firstName, setFirstName] = useState("");
 
 
   useEffect(() => {
     const databaseHost = 'localhost:3000';
     
+    
     const getData = async () => {
-      const records = await axios.get(`http://${databaseHost}/students/${userName}/khata`);
-      setToPayRecords(records.data.to_pay);
-      setToReceiveRecords(records.data.to_receive);
+      try {
+        const records = await axios.get(`http://${databaseHost}/students/${userName}/khata`);
+        setToPayRecords(records.data.to_pay);
+        setToReceiveRecords(records.data.to_receive);
+      } catch (err) {
+        console.log("arey bhai",err.response.status);
+      }
     }
     
     const getFirstName = async () => {
-      const fname = await axios.get(`http://${databaseHost}/students/${userName}/fname`);
-      setFirstName(fname.data);
+
+      try {
+        const fname = await axios.get(`http://${databaseHost}/students/${userName}/fname`);
+        setFirstName(fname.data);
+      } catch (err) {
+        console.log("arey bhai",err.response);
+      }
     }
   
     getData();

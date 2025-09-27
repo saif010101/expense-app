@@ -2,7 +2,8 @@ import { db } from "../../backend/server.js";
 
 const getAllMeals = async (req, res) => {
   try {
-    const [response] = await db.query("SELECT * FROM meals");
+    const index = Number(req.params.index);
+    const [response] = await db.query(`SELECT * FROM meals ORDER BY date DESC LIMIT 5 OFFSET ${ 3 * (index - 1)}`);
     res.json(response);
   } catch (err) {
     console.error(err);
@@ -57,6 +58,7 @@ const addMeal = async (req, res) => {
 
 const getMealParticipants = async (req, res) => {
   try {
+
     // Get meal id from url
     const meal_id = Number(req.params.meal_id);
     const [response] = await db.query(

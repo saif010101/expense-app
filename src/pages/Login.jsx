@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({toggleLoginState}) => {
+const Login = ({toggleLoginStateTrue}) => {
   
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -13,7 +13,7 @@ const Login = ({toggleLoginState}) => {
     try {
       const response = await axios.post("http://localhost:3000/students/login", {username,password},{withCredentials: true});
       if (response.status === 200){
-        toggleLoginState();
+        toggleLoginStateTrue();
         navigate("/");
       } 
     } catch (err) {

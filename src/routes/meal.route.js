@@ -4,7 +4,7 @@ import { addMeal, getAllMeals, getMealParticipants } from "../controllers/meal.c
 
 const router = Router();
 
-router.get("/",getAllMeals);
+router.get("/:index",getAllMeals);
 router.post("/add",addMeal);
 router.get("/:meal_id/participants",getMealParticipants)
 
