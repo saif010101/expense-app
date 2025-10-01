@@ -17,8 +17,8 @@ const logoutUser = (req,res) => {
         if (err) {
             res.status(500).send("masla hai")
         }
-        res.clearCookie('saif', { path: '/', httpOnly: true,secure:false});
-        res.redirect('http://localhost:5173/login');
+        res.clearCookie('saif');
+        res.status(200).send("session destroyed");
     });
 }
 

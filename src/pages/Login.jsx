@@ -7,6 +7,7 @@ const Login = ({toggleLoginStateTrue}) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loginFailed,setLoginFailed] = useState(false);
 
   const handleLogin = async e => {
     e.preventDefault();
@@ -17,7 +18,7 @@ const Login = ({toggleLoginStateTrue}) => {
         navigate("/");
       } 
     } catch (err) {
-        if (err.response.status === 401) console.log("login failed");
+        if (err.response.status === 401) setLoginFailed(true);
     }
     
   };
@@ -25,7 +26,8 @@ const Login = ({toggleLoginStateTrue}) => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white text-black p-8 rounded-2xl shadow-lg w-80 md:w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <h1 className="text-2xl font-bold mb-2 text-center">Login</h1>
+        <p data-login-failed={loginFailed ? "true" : "false"} className="opacity-0 text-red-500 mb-3 transition-all duration-200 ease-in">Login failed, please verify your credentials.</p>
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block mb-1 text-sm font-medium">Username</label>

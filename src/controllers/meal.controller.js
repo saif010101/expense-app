@@ -41,6 +41,8 @@ const addMeal = async (req, res) => {
   const n = countStudents(participatedStudents);
   const amountPerPerson = Math.round(formData.total_cost / n);
 
+  console.log(participatedStudents);
+  
   // add participants
   for (const username in participatedStudents) {
     if (participatedStudents[username]) {

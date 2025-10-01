@@ -1,5 +1,5 @@
-import { useState,useEffect } from "react";
-import { Routes, Route,useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./components/Navbar.jsx";
 import Modal from "./components/Modal.jsx";
@@ -10,8 +10,6 @@ import SuccessToast from "./components/SuccessToast.jsx";
 import "./index.css";
 
 function App() {
-  console.log("here")
-  
   const databaseHost = "localhost:3000";
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,34 +29,35 @@ function App() {
     },
     description: "null",
   });
-  
+
+  console.log(formData);
   const toggleLoginStateTrue = () => {
     setIsLoggedIn(true);
-  }
+  };
   const toggleLoginStateFalse = () => {
     setIsLoggedIn(false);
-  }
+  };
 
   useEffect(() => {
     const validateLogin = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/",{withCredentials: true});
+        const response = await axios.get("http://localhost:3000/", {
+          withCredentials: true,
+        });
         if (response.status === 200) {
           console.log("hihaaa");
           toggleLoginStateTrue();
+          navigate("/");
         }
-      } catch (err) {    
-
+      } catch (err) {
         if (err.response.status !== 200) {
           navigate("/login");
         }
       }
-    
-    }
-    validateLogin(); 
+    };
+    validateLogin();
+  }, []);
 
-  },[])
-  
   const isStudentCheckBox = (targetElement) => {
     return targetElement.type === "checkbox";
   };
@@ -76,7 +75,20 @@ function App() {
           [targetElement.name]: targetElement.checked,
         },
       });
-    else setFormData({ ...formData, [e.target.name]: e.target.value });
+    else if (targetElement.name === "paid_by") {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+        participated: Object.fromEntries(
+          Object.keys(formData.participated).map((participant) => [
+            participant,
+            false,
+          ])
+        ),
+      });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
   const toggleModal = () => {
@@ -104,7 +116,6 @@ function App() {
     setRefreshKey(refreshKey + 1); // trigger refresh
   };
 
-
   return (
     <>
       <SuccessToast
@@ -115,7 +126,7 @@ function App() {
         visibility={isClearDataToastVisible}
         message="Khata cleared successfully."
       />
-      {isLoggedIn && <Navbar toggleLoginStateFalse={toggleLoginStateFalse}/>}
+      {isLoggedIn && <Navbar toggleLoginStateFalse={toggleLoginStateFalse} />}
       <Routes>
         <Route path="/meals" element={<Meals />}></Route>
         <Route
@@ -128,11 +139,14 @@ function App() {
                 toggleClearDataToast={toggleClearDataToast}
               />
             ) : (
-              <Login toggleLoginStateTrue={toggleLoginStateTrue}/>
+              <Login toggleLoginStateTrue={toggleLoginStateTrue} />
             )
           }
         ></Route>
-        <Route path="/login" element={<Login toggleLoginStateTrue={toggleLoginStateTrue} />}></Route>
+        <Route
+          path="/login"
+          element={<Login toggleLoginStateTrue={toggleLoginStateTrue} />}
+        ></Route>
       </Routes>
       <Modal
         handleMealSubmit={handleMealSubmit}

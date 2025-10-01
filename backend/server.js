@@ -15,9 +15,9 @@ app.use(express.json());
 app.use(
   session({
     name: 'saif',
-    secret: "bxc",
+    secret: "bxcsdfs",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false },
   })
 );

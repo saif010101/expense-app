@@ -19,7 +19,7 @@ const Profile = ({toggleLoginStateFalse}) => {
 
   const handleLogOut = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/logout");
+      const response = await axios.get("http://localhost:3000/logout",{withCredentials: true});
       navigate("/login");
       toggleLoginStateFalse();
     } catch (err) {
@@ -38,7 +38,7 @@ const Profile = ({toggleLoginStateFalse}) => {
       </div>
       <ul
         data-dropdown-visible={isVisible ? "true" : "false"}
-        className="absolute -left-6 md:right-0 top-11 flex flex-col gap-2 bg-white rounded-lg opacity-0 overflow-hidden transition duration-300 ease-in"
+        className="w-36 absolute  md:right-0 top-11 flex flex-col gap-2 bg-white rounded-lg opacity-0 overflow-hidden transition duration-300 ease-in"
       >
         <li onClick={handleLogOut} className="text-[0.75rem] p-1 text-center hover:bg-gray-100">Log Out</li>
       </ul>

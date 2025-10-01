@@ -38,6 +38,10 @@ body {
   color : white;
 }
 
+[data-login-failed="true"] {
+  opacity: 1;
+}
+
 
 @keyframes successPopupReveal {
     0% {
