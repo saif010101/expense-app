@@ -1,21 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useBtnRef } from "./btnContext";
 import axios from "axios";
 
 export default function Modal({
   handleMealSubmit,
   handleChange,
   isModalOpen = false,
-  paid_by = '',
-  toggleModal
+  paid_by = "",
+  closeModal,
 }) {
+  const modalRef = useRef(null);
+  const btnRef = useBtnRef();
   const [studentsData, setStudentsData] = useState([]);
   const databaseHost = "localhost:3000";
+
   useEffect(() => {
+    const handleOutsideClick = (event) => {
+
+      // if click is made outside the modal
+      if (!modalRef.current.contains(event.target) && event.target !== btnRef.current) {
+        closeModal();
+      }
+    };
     const getStudentsData = async () => {
       const records = await axios.get(`http://${databaseHost}/students/`);
       setStudentsData(records.data);
     };
-
+    document.addEventListener('click',handleOutsideClick);
+    // return () => document.removeEventListener("click", handleOutsideClick);
     getStudentsData();
   }, []);
 
@@ -25,7 +37,10 @@ export default function Modal({
         data-modal-wrapper={isModalOpen ? "active" : "inactive"}
         className="fixed top-0 w-full h-screen opacity-0 bg-black/40 pointer-events-none transition duration-300 ease-in"
       >
-        <div className="absolute top-1/2 left-1/2  transform-[translate(-50%,-50%)] w-8/10 max-w-[700px] p-5 md:p-6 bg-white flex flex-col gap-2 rounded-lg border-1 border-gray-400">
+        <div
+          ref={modalRef}
+          className="absolute top-1/2 left-1/2  transform-[translate(-50%,-50%)] w-8/10 max-w-[700px] p-5 md:p-6 bg-white flex flex-col gap-2 rounded-lg border-1 border-gray-400"
+        >
           <div className="grid gap-1 md:grid-cols-2 md:gap-5">
             <div className="grid gap-1">
               {/* Paid by */}
@@ -66,22 +81,21 @@ export default function Modal({
 
           <div className="flex flex-col gap-2 my-3">
             <span className="font-[600]">Participated</span>
-            {studentsData.filter(std => std.username !== paid_by).map(student => (
-              <div>
-                <input
-                  onChange={handleChange}
-                  type="checkbox"
-                  id={student.username}
-                  name={student.username}
-                />
-                <label
-                  className="ml-2 font-[500]"
-                  htmlFor={student.username}
-                >
-                  {student.fname}
-                </label>
-              </div>
-            ))}
+            {studentsData
+              .filter((std) => std.username !== paid_by)
+              .map((student) => (
+                <div>
+                  <input
+                    onChange={handleChange}
+                    type="checkbox"
+                    id={student.username}
+                    name={student.username}
+                  />
+                  <label className="ml-2 font-[500]" htmlFor={student.username}>
+                    {student.fname}
+                  </label>
+                </div>
+              ))}
           </div>
 
           <div className="flex flex-col gap-2 mb-2">
@@ -102,7 +116,10 @@ export default function Modal({
             >
               Add Meal
             </button>
-            <button onClick={toggleModal} className="font-[500] py-1 bg-transparent hover:bg-green-300 border-2 border-green-400  cursor-pointer rounded-md">
+            <button
+              onClick={closeModal}
+              className="font-[500] py-1 bg-transparent hover:bg-green-300 border-2 border-green-400  cursor-pointer rounded-md"
+            >
               Close
             </button>
           </div>

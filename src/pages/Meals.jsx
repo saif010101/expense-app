@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ParticipantsModal from "../components/ParticipantsModal.jsx";
+import { useViewBtnRef } from "../components/btnContext.jsx";
 
 const Meals = () => {
   // List of days
@@ -13,7 +14,7 @@ const Meals = () => {
     "Friday",
     "Saturday",
   ];
-
+  
   // List of months
   const months = [
     "January",
@@ -29,36 +30,47 @@ const Meals = () => {
     "November",
     "December",
   ];
-
-  const [paginationList, setPaginationList] = useState([
-    { value: 1, selected: true },
-    { value: 2, selected: false },
-    { value: 3, selected: false },
-    { value: 4, selected: false },
-    { value: 5, selected: false },
-  ]);
-
+  
+  const viewBtnRef = useViewBtnRef();
+  const [currentPage,setCurrentPage] = useState(1);
+  const [paginationnList,setPaginationnList] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mealsData, setMealsData] = useState([]);
   const [modalData, setmodalData] = useState({});
-
+  
   const databaseHost = "localhost:3000";
-
+  
   // fetch meals data from database
   useEffect(() => {
+    
+    // get total number of records in the meals table
+    const getNumberOfPages = async () => {
+      try {
+        const response = await axios.get(`http://${databaseHost}/meals/numberOfRecords`);
+        const {numberOfPages} = response.data;
+        setPaginationnList(Array.from({length : numberOfPages},(v,i) => i + 1));
 
-    const index = paginationList.find(page => page.selected === true).value;
+      } catch (err) {
+          console.log("fdaf123");
+      }
+    }
+
     const getMealsData = async () => {
-      const records = await axios.get(`http://${databaseHost}/meals/${index}`);
+      const records = await axios.get(`http://${databaseHost}/meals/getMeals/${currentPage}`);
       setMealsData(records.data);
     };
 
+    getNumberOfPages();
     getMealsData();
-  }, [paginationList]);
+  }, [currentPage]);
 
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
+  const openModal = () => {
+    setIsModalOpen(true);
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
 
   const getModalData = async (meal_id) => {
     // Get Meal Description and Amount
@@ -78,16 +90,16 @@ const Meals = () => {
     };
 
     setmodalData(mealData);
-    toggleModal();
+    openModal();
   };
 
-  const handlePaginationSelection = (index) => {
-    const newList = paginationList.map((page) => {
-      page.selected = page.value === index ? true : false;
-      return page;
-    });
-    setPaginationList(newList);
-  };
+  // const handlePaginationSelection = (index) => {
+  //   const newList = paginationList.map((page) => {
+  //     page.selected = page.value === index ? true : false;
+  //     return page;
+  //   });
+  //   setPaginationList(newList);
+  // };
 
   return (
     <>
@@ -113,6 +125,7 @@ const Meals = () => {
                       getModalData(meal.meal_id);
                     }}
                     className="text-blue-600 underline"
+                    ref={viewBtnRef}
                   >
                     View
                   </span>
@@ -126,20 +139,20 @@ const Meals = () => {
         )}
         <ParticipantsModal
           isModalOpen={isModalOpen}
-          toggleModal={toggleModal}
+          closeModal={closeModal}
           modalData={modalData}
         />
       </div>
       <nav className="p-2 mx-auto mt-2 bg-transparent w-fit rounded-md">
         <ul className="flex gap-2">
-          {paginationList.map((page) => (
+          {paginationnList && paginationnList.map((pageNo) => (
             <li
-              key={page.value}
-              data-pagination-selected={page.selected ? "true" : "false"}
+              key={pageNo}
+              data-pagination-selected={pageNo === currentPage ? "true" : "false"}
               className="py-2 px-4 rounded-md bg-white shadow-md hover:bg-white/80 cursor-pointer"
-              onClick={() => {handlePaginationSelection(page.value)}}
+              onClick={() => {setCurrentPage(pageNo)}}
             >
-              {page.value}
+              {pageNo}
             </li>
           ))}
         </ul>
